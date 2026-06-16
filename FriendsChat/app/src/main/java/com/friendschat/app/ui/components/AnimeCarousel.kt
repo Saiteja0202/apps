@@ -23,11 +23,10 @@ import coil.compose.AsyncImage
 import com.friendschat.app.R
 import kotlinx.coroutines.delay
 
-/** The romantic anime art bundled in res/drawable, in display order. */
+/** The 4K backdrop art bundled in res/drawable, in display order. */
 val animeImages = listOf(
-    R.drawable.anime1, R.drawable.anime2, R.drawable.anime3, R.drawable.anime4,
-    R.drawable.anime5, R.drawable.anime6, R.drawable.anime7, R.drawable.anime8,
-    R.drawable.anime9, R.drawable.anime10
+    R.drawable.anime1, R.drawable.anime2, R.drawable.anime3,
+    R.drawable.anime4, R.drawable.anime5
 )
 
 /**
@@ -58,7 +57,7 @@ fun AnimeCarousel(
 @Composable
 private fun KenBurnsImage(resId: Int) {
     val transition = rememberInfiniteTransition(label = "kenburns")
-    // Gentle zoom only — small enough that low-res source art stays crisp.
+    // Gentle zoom — the 4K source art stays crisp at any scale.
     val zoom by transition.animateFloat(
         initialValue = 1f,
         targetValue = 1.06f,
