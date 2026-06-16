@@ -200,7 +200,7 @@ fun EditProfileScreen(
                 locVm = locVm,
                 country = country,
                 city = location,
-                onCountry = { country = it; location = ""; locVm.loadCities(it) },
+                onCountry = { country = it },
                 onCity = { location = it }
             )
 

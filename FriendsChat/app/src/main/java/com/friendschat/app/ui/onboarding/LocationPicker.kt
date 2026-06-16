@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,10 @@ private const val MAX_VISIBLE = 100
  * Reusable cascading location selector used by both onboarding and Edit Profile.
  * Country list and the selected country's cities come live from
  * [LocationViewModel]; picking a country reloads the city list in real time.
+ *
+ * Both fields are freely editable — you can type to filter, pick from the list,
+ * or clear the text entirely. The city list reloads automatically whenever the
+ * country text matches a known country (typed or picked).
  */
 @Composable
 fun LocationPicker(
@@ -37,6 +42,14 @@ fun LocationPicker(
     onCountry: (String) -> Unit,
     onCity: (String) -> Unit
 ) {
+    // Load the matching city list whenever a valid country is set — whether the
+    // user typed it in full or picked it from the dropdown.
+    LaunchedEffect(country, locVm.countries) {
+        if (country.isNotBlank() && locVm.countries.any { it.equals(country, ignoreCase = true) }) {
+            locVm.loadCities(country)
+        }
+    }
+
     Column {
         SearchableDropdown(
             label = "Country",
@@ -44,7 +57,7 @@ fun LocationPicker(
             options = locVm.countries,
             loading = locVm.loadingCountries,
             enabled = true,
-            onPick = onCountry
+            onValueChange = onCountry
         )
         Spacer(Modifier.height(12.dp))
         SearchableDropdown(
@@ -57,7 +70,7 @@ fun LocationPicker(
             options = locVm.cities,
             loading = locVm.loadingCities,
             enabled = country.isNotBlank(),
-            onPick = onCity
+            onValueChange = onCity
         )
         locVm.error?.let {
             Spacer(Modifier.height(10.dp))
@@ -69,6 +82,10 @@ fun LocationPicker(
 /**
  * Type-to-filter dropdown that stays smooth with thousands of options by showing
  * only the first [MAX_VISIBLE] matches — every entry is still reachable by typing.
+ *
+ * It's a fully controlled field: [selected] is the displayed text and every edit
+ * (typing, deleting, or picking an option) is reported through [onValueChange],
+ * so the caller's state always reflects exactly what's on screen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,13 +95,12 @@ fun SearchableDropdown(
     options: List<String>,
     loading: Boolean,
     enabled: Boolean,
-    onPick: (String) -> Unit
+    onValueChange: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var query by remember(selected) { mutableStateOf(selected) }
-    val filtered = remember(query, options) {
-        if (query.isBlank()) options.take(MAX_VISIBLE)
-        else options.filter { it.contains(query, ignoreCase = true) }.take(MAX_VISIBLE)
+    val filtered = remember(selected, options) {
+        if (selected.isBlank()) options.take(MAX_VISIBLE)
+        else options.filter { it.contains(selected, ignoreCase = true) }.take(MAX_VISIBLE)
     }
 
     ExposedDropdownMenuBox(
@@ -92,8 +108,8 @@ fun SearchableDropdown(
         onExpandedChange = { if (enabled) expanded = it }
     ) {
         OutlinedTextField(
-            value = query,
-            onValueChange = { query = it; expanded = true },
+            value = selected,
+            onValueChange = { onValueChange(it); expanded = true },
             label = { Text(label) },
             singleLine = true,
             enabled = enabled,
@@ -108,7 +124,7 @@ fun SearchableDropdown(
                 filtered.forEach { option ->
                     DropdownMenuItem(
                         text = { Text(option) },
-                        onClick = { onPick(option); query = option; expanded = false }
+                        onClick = { onValueChange(option); expanded = false }
                     )
                 }
             }
