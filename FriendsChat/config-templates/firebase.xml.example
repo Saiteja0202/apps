@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TEMPLATE. Copy this file to:
+      app/src/main/res/values/firebase.xml
+  and fill in the 5 values from your Firebase project's google-services.json
+  (Android package com.friendschat.app). The real firebase.xml is git-ignored.
+
+    mobilesdk_app_id            -> google_app_id
+    api_key.current_key         -> google_api_key
+    project_info.project_number -> gcm_defaultSenderId
+    project_info.project_id     -> project_id
+    project_info.storage_bucket -> google_storage_bucket
+-->
+<resources>
+    <string name="google_app_id" translatable="false">1:000000000000:android:0000000000000000000000</string>
+    <string name="google_api_key" translatable="false">AIzaSyDUMMYDUMMYDUMMYDUMMYDUMMYDUMMY000</string>
+    <string name="gcm_defaultSenderId" translatable="false">000000000000</string>
+    <string name="project_id" translatable="false">your-project-id</string>
+    <string name="google_storage_bucket" translatable="false">your-project-id.appspot.com</string>
+</resources>

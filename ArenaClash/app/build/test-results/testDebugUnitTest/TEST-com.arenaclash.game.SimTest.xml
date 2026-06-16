@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.arenaclash.game.SimTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-06-11T14:49:07" hostname="LTIN605101" time="0.065">
+  <properties/>
+  <testcase name="botGeneratesActionTowardEnemy" classname="com.arenaclash.game.SimTest" time="0.046"/>
+  <testcase name="healthPackHealsAndDeactivates" classname="com.arenaclash.game.SimTest" time="0.005"/>
+  <testcase name="startPlacesPlayersInArena" classname="com.arenaclash.game.SimTest" time="0.001"/>
+  <testcase name="winnerDeclaredWhenOneLeft" classname="com.arenaclash.game.SimTest" time="0.0"/>
+  <testcase name="zoneShrinksOverTime" classname="com.arenaclash.game.SimTest" time="0.003"/>
+  <testcase name="bulletDamagesAndKills" classname="com.arenaclash.game.SimTest" time="0.004"/>
+  <testcase name="outsideZoneTakesDamage" classname="com.arenaclash.game.SimTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

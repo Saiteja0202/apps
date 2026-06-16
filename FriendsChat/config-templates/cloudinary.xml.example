@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  TEMPLATE. Copy this file to:
+      app/src/main/res/values/cloudinary.xml
+  and fill in your free Cloudinary cloud name and an UNSIGNED upload preset
+  name. The real cloudinary.xml is git-ignored.
+-->
+<resources>
+    <string name="cloudinary_cloud_name" translatable="false">your_cloud_name</string>
+    <string name="cloudinary_upload_preset" translatable="false">friendschat_unsigned</string>
+</resources>

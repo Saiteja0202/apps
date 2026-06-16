@@ -1,0 +1,30 @@
+# ---- Secrets: never commit these ----
+# Real Firebase + Cloudinary credentials. Copy the *.example files and fill in.
+app/src/main/res/values/firebase.xml
+app/src/main/res/values/cloudinary.xml
+local.properties
+
+# Any screenshots/exports that may contain keys
+*-secret.*
+google-services.json
+
+# ---- Gradle / build output ----
+.gradle/
+build/
+app/build/
+captures/
+
+# ---- Android Studio / IntelliJ ----
+.idea/
+*.iml
+*.hprof
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- Signing / packages ----
+*.apk
+*.aab
+*.keystore
+*.jks

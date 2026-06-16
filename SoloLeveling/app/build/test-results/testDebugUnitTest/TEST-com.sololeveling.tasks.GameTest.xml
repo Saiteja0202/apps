@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sololeveling.tasks.GameTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-06-11T13:27:35" hostname="LTIN605101" time="0.144">
+  <properties/>
+  <testcase name="todoActiveUntilDone" classname="com.sololeveling.tasks.GameTest" time="0.09"/>
+  <testcase name="xpCurveIncreases" classname="com.sololeveling.tasks.GameTest" time="0.001"/>
+  <testcase name="rankThresholds" classname="com.sololeveling.tasks.GameTest" time="0.0"/>
+  <testcase name="counterCompletion" classname="com.sololeveling.tasks.GameTest" time="0.004"/>
+  <testcase name="grantNegativeXpCanDeLevel" classname="com.sololeveling.tasks.GameTest" time="0.007"/>
+  <testcase name="difficultyXpValues" classname="com.sololeveling.tasks.GameTest" time="0.0"/>
+  <testcase name="shadowsUnlock" classname="com.sololeveling.tasks.GameTest" time="0.02"/>
+  <testcase name="achievementsEarned" classname="com.sololeveling.tasks.GameTest" time="0.004"/>
+  <testcase name="statsRespectCreationDate" classname="com.sololeveling.tasks.GameTest" time="0.003"/>
+  <testcase name="streakCountsConsecutiveDays" classname="com.sololeveling.tasks.GameTest" time="0.002"/>
+  <testcase name="grantXpLevelsUp" classname="com.sololeveling.tasks.GameTest" time="0.001"/>
+  <testcase name="completionRateComputed" classname="com.sololeveling.tasks.GameTest" time="0.006"/>
+  <testcase name="habitScheduling" classname="com.sololeveling.tasks.GameTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
