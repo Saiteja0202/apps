@@ -3,6 +3,7 @@ package com.friendschat.app.ads
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import com.friendschat.app.BuildConfig
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -20,12 +21,18 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 object RewardedAdManager {
     private const val TAG = "RewardedAdManager"
 
-    // Rewarded ad unit created in AdMob for the GenZ app.
-    private const val AD_UNIT_ID = "ca-app-pub-2109171031508747/3099239965"
+    // Debug builds use Google's official test rewarded unit (always fills, safe
+    // to click). Release builds use the real GenZ AdMob unit.
+    private val AD_UNIT_ID =
+        if (BuildConfig.DEBUG) "ca-app-pub-3940256099942544/5224354917"
+        else "ca-app-pub-2109171031508747/3099239965"
 
     private const val PREFS = "ads_prefs"
     private const val KEY_LAST_SHOWN = "last_rewarded_shown_at"
-    private const val INTERVAL_MS = 12L * 60L * 60L * 1000L // 12 hours
+
+    // Show every minute in debug so it's easy to verify; every 12 hours in release.
+    private val INTERVAL_MS =
+        if (BuildConfig.DEBUG) 60L * 1000L else 12L * 60L * 60L * 1000L
 
     private var rewardedAd: RewardedAd? = null
     private var isLoading = false

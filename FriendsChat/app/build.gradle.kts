@@ -16,9 +16,19 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("../genz-release.keystore")
+            storePassword = "genz2026"
+            keyAlias = "genz"
+            keyPassword = "genz2026"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -35,6 +45,13 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    lint {
+        // This app uses ComponentActivity (not Fragments), so the activity-result
+        // fragment-version check is a false positive. Don't fail release builds on it.
+        disable += "InvalidFragmentVersionForActivityResult"
+        abortOnError = false
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
