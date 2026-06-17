@@ -8,6 +8,8 @@ import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Whatshot
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +44,7 @@ import com.friendschat.app.ui.chat.ChatScreen
 import com.friendschat.app.ui.discover.DiscoverScreen
 import com.friendschat.app.ui.likes.LikesScreen
 import com.friendschat.app.ui.matches.MatchesScreen
+import com.friendschat.app.ui.matches.MatchesViewModel
 import com.friendschat.app.ui.onboarding.OnboardingFlow
 import com.friendschat.app.ui.profile.EditProfileScreen
 import com.friendschat.app.ui.profile.ProfileScreen
@@ -120,6 +123,11 @@ private fun MainTabs() {
     val currentRoute = backStack?.destination?.route
     val showBar = currentRoute in TABS.map { it.route }
 
+    // Unread-chat count for the Matches tab badge.
+    val matchesVm: MatchesViewModel = viewModel()
+    val matchRows by matchesVm.matches.collectAsState()
+    val unreadCount = matchRows.count { it.unread }
+
     Scaffold(
         bottomBar = {
             if (showBar) {
@@ -134,7 +142,15 @@ private fun MainTabs() {
                                     restoreState = true
                                 }
                             },
-                            icon = { Icon(tab.icon, contentDescription = tab.label) },
+                            icon = {
+                                if (tab is Tab.Matches && unreadCount > 0) {
+                                    BadgedBox(badge = { Badge { Text("$unreadCount") } }) {
+                                        Icon(tab.icon, contentDescription = tab.label)
+                                    }
+                                } else {
+                                    Icon(tab.icon, contentDescription = tab.label)
+                                }
+                            },
                             label = { Text(tab.label) }
                         )
                     }

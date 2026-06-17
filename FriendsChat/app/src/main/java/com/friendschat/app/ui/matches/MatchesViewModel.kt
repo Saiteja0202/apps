@@ -14,7 +14,8 @@ data class MatchRow(
     val chat: Chat,
     val title: String,
     val photoUrl: String,
-    val deleted: Boolean = false
+    val deleted: Boolean = false,
+    val unread: Boolean = false
 )
 
 class MatchesViewModel : ViewModel() {
@@ -35,7 +36,8 @@ class MatchesViewModel : ViewModel() {
                     chat = chat,
                     title = if (deleted) "Account deleted" else chat.titleFor(myUid),
                     photoUrl = other?.photoUrl ?: chat.photoUrl,
-                    deleted = deleted
+                    deleted = deleted,
+                    unread = chat.hasUnreadFor(myUid)
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())

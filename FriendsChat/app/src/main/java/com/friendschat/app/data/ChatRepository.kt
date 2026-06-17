@@ -423,9 +423,18 @@ class ChatRepository {
             mapOf(
                 "lastMessage" to preview,
                 "lastMessageSender" to senderName,
+                "lastMessageSenderId" to message.senderId,
                 "lastMessageTime" to FieldValue.serverTimestamp()
             )
         ).await()
+    }
+
+    /** Marks the whole chat as read by me right now (drives the unread badge). */
+    suspend fun markChatRead(chatId: String) {
+        runCatching {
+            db.collection("chats").document(chatId)
+                .update("lastRead.$myUid", FieldValue.serverTimestamp()).await()
+        }
     }
 
     private fun queryFileMeta(context: Context, uri: Uri): Pair<String, Long> {

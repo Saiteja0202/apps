@@ -14,6 +14,7 @@ import com.friendschat.app.data.ChatUser
 import com.friendschat.app.data.DatingRepository
 import com.friendschat.app.data.Message
 import com.friendschat.app.data.MessageType
+import com.friendschat.app.messaging.MessageNotifier
 import com.friendschat.app.ui.formatLastSeen
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -72,6 +73,7 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
         if (started) return
         started = true
         chatId = id
+        MessageNotifier.activeChatId = id   // suppress notifications while this chat is open
         viewModelScope.launch {
             repo.observeChat(id).collect { chat ->
                 if (chat != null) {
@@ -93,13 +95,19 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
                 }
             }
         }
+        // Opening the chat clears its unread badge.
+        viewModelScope.launch { repo.markChatRead(id) }
         viewModelScope.launch {
             repo.observeMessages(id).collect { list ->
                 messages = list
                 val unread = list.filter {
                     it.id.isNotBlank() && it.senderId != myUid && !it.readBy.contains(myUid) && !it.isLocked
                 }.map { it.id }
-                if (unread.isNotEmpty()) viewModelScope.launch { runCatching { repo.markRead(id, unread) } }
+                if (unread.isNotEmpty()) viewModelScope.launch {
+                    runCatching { repo.markRead(id, unread) }
+                    // A message arrived while I'm in the chat — keep it marked read.
+                    runCatching { repo.markChatRead(id) }
+                }
             }
         }
     }
@@ -250,5 +258,11 @@ class ChatViewModel(app: Application) : AndroidViewModel(app) {
 
     fun deleteHistory() {
         viewModelScope.launch { runCatching { repo.deleteChatHistory(chatId) }.onFailure { error = it.message } }
+    }
+
+    override fun onCleared() {
+        // Leaving the chat — allow its notifications again.
+        if (MessageNotifier.activeChatId == chatId) MessageNotifier.activeChatId = null
+        super.onCleared()
     }
 }

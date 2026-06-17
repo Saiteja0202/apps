@@ -1,5 +1,6 @@
 package com.friendschat.app.data
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
@@ -102,8 +103,10 @@ data class Chat(
     val createdBy: String = "",
     val lastMessage: String = "",
     val lastMessageSender: String = "",
+    val lastMessageSenderId: String = "",          // uid of who sent the last message
     val typing: Map<String, Long> = emptyMap(),
     val draft: Map<String, String> = emptyMap(),   // live typing preview
+    val lastRead: Map<String, @JvmSuppressWildcards Timestamp> = emptyMap(), // uid -> when they last opened the chat
     @ServerTimestamp val lastMessageTime: Date? = null
 ) {
     fun titleFor(currentUid: String): String {
@@ -114,6 +117,14 @@ data class Chat(
 
     fun otherUid(currentUid: String): String =
         members.firstOrNull { it != currentUid } ?: ""
+
+    /** True if the newest message is from someone else and arrived after I last opened this chat. */
+    fun hasUnreadFor(uid: String): Boolean {
+        val lastMsgAt = lastMessageTime?.time ?: return false
+        if (lastMessageSenderId.isBlank() || lastMessageSenderId == uid) return false
+        val readAt = lastRead[uid]?.toDate()?.time ?: 0L
+        return lastMsgAt > readAt
+    }
 }
 
 object MessageType {

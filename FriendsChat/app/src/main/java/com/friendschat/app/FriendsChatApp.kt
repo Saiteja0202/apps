@@ -8,6 +8,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.friendschat.app.ads.RewardedAdManager
+import com.friendschat.app.messaging.MessageNotifier
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -26,6 +27,11 @@ class FriendsChatApp : Application() {
             override fun onStart(owner: LifecycleOwner) = setPresence(true)
             override fun onStop(owner: LifecycleOwner) = setPresence(false)
         })
+        // App-level message notifications: watch chats whenever someone is signed
+        // in (and stop on sign-out). Runs as long as the process is alive.
+        FirebaseAuth.getInstance().addAuthStateListener { auth ->
+            if (auth.currentUser != null) MessageNotifier.start(this) else MessageNotifier.stop()
+        }
     }
 
     private fun setPresence(online: Boolean) {
