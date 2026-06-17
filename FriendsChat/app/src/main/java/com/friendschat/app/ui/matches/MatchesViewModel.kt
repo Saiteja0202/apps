@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.friendschat.app.data.Chat
 import com.friendschat.app.data.ChatRepository
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
 /** A match row = the chat plus the matched person's photo, resolved live. */
@@ -24,8 +27,14 @@ class MatchesViewModel : ViewModel() {
     private val repo = ChatRepository()
     val myUid: String get() = repo.myUid
 
+    /** Ticks periodically so online-status freshness is re-evaluated even when no
+     *  Firestore document changes (e.g. someone's app was killed and just goes stale). */
+    private fun ticker(): Flow<Unit> = flow {
+        while (true) { emit(Unit); delay(30_000) }
+    }
+
     val matches: StateFlow<List<MatchRow>> =
-        combine(repo.observeChats(), repo.observeUsers()) { chats, users ->
+        combine(repo.observeChats(), repo.observeUsers(), ticker()) { chats, users, _ ->
             val byId = users.associateBy { it.uid }
             chats.filter { it.type == "direct" }.map { chat ->
                 val otherUid = chat.otherUid(myUid)
@@ -39,7 +48,7 @@ class MatchesViewModel : ViewModel() {
                     photoUrl = other?.photoUrl ?: chat.photoUrl,
                     deleted = deleted,
                     unread = chat.hasUnreadFor(myUid),
-                    online = other?.online == true || other?.isFreeNow == true
+                    online = other?.isOnline == true   // true presence only (fresh heartbeat)
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())

@@ -2,6 +2,7 @@ package com.friendschat.app
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -27,15 +29,25 @@ class MainActivity : ComponentActivity() {
     private val requestNotifications =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
 
+    // Chat id from a tapped message notification, consumed once by the UI.
+    private val pendingChatId = mutableStateOf<String?>(null)
+
     override fun onResume() {
         super.onResume()
         // Shows a rewarded ad if 12+ hours have passed since the last one.
         RewardedAdManager.maybeShowAd(this)
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        intent.getStringExtra("openChatId")?.let { pendingChatId.value = it }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeState.load(this)
+        pendingChatId.value = intent?.getStringExtra("openChatId")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
@@ -58,7 +70,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppRoot()
+                    AppRoot(
+                        openChatId = pendingChatId.value,
+                        onChatConsumed = { pendingChatId.value = null }
+                    )
                 }
             }
         }

@@ -15,8 +15,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class FriendsChatApp : Application() {
+
+    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private var heartbeatJob: Job? = null
+
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
@@ -25,8 +36,14 @@ class FriendsChatApp : Application() {
         // Presence: mark the signed-in user online/offline as the app moves
         // to the foreground/background, recording last-seen each time.
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onStart(owner: LifecycleOwner) = setPresence(true)
-            override fun onStop(owner: LifecycleOwner) = setPresence(false)
+            override fun onStart(owner: LifecycleOwner) {
+                setPresence(true)
+                startHeartbeat()
+            }
+            override fun onStop(owner: LifecycleOwner) {
+                stopHeartbeat()
+                setPresence(false)
+            }
         })
         // App-level message notifications: watch chats whenever someone is signed
         // in (and stop on sign-out). Runs as long as the process is alive.
@@ -47,6 +64,23 @@ class FriendsChatApp : Application() {
             mapOf("online" to online, "lastSeen" to FieldValue.serverTimestamp()),
             SetOptions.merge()
         )
+    }
+
+    /** While foreground, refresh lastSeen every 50s so others see an accurate
+     *  online status (and a killed app's stale online flag expires on its own). */
+    private fun startHeartbeat() {
+        heartbeatJob?.cancel()
+        heartbeatJob = appScope.launch {
+            while (isActive) {
+                delay(50_000)
+                setPresence(true)
+            }
+        }
+    }
+
+    private fun stopHeartbeat() {
+        heartbeatJob?.cancel()
+        heartbeatJob = null
     }
 
     private fun createNotificationChannel() {

@@ -51,7 +51,7 @@ import com.friendschat.app.ui.profile.ProfileScreen
 
 /** Top-level router: auth flow → onboarding gate → main tabbed app. */
 @Composable
-fun AppRoot() {
+fun AppRoot(openChatId: String? = null, onChatConsumed: () -> Unit = {}) {
     val authRepo = remember { AuthRepository() }
     var loggedIn by remember { mutableStateOf(authRepo.isLoggedIn()) }
     var verified by remember { mutableStateOf(authRepo.isEmailVerified()) }
@@ -75,7 +75,7 @@ fun AppRoot() {
     when {
         !loggedIn -> AuthFlow()
         !verified -> VerifyEmailScreen(onVerified = { verified = true })
-        else -> MainGate()
+        else -> MainGate(openChatId = openChatId, onChatConsumed = onChatConsumed)
     }
 }
 
@@ -96,14 +96,18 @@ private fun AuthFlow() {
 
 /** Decides between onboarding and the main app based on the loaded profile. */
 @Composable
-private fun MainGate(vm: GateViewModel = viewModel()) {
+private fun MainGate(
+    openChatId: String? = null,
+    onChatConsumed: () -> Unit = {},
+    vm: GateViewModel = viewModel()
+) {
     val me by vm.me.collectAsState()
     when {
         me == null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
         !me!!.onboarded -> OnboardingFlow(onDone = {})
-        else -> MainTabs()
+        else -> MainTabs(openChatId = openChatId, onChatConsumed = onChatConsumed)
     }
 }
 
@@ -117,11 +121,19 @@ private sealed class Tab(val route: String, val label: String, val icon: ImageVe
 private val TABS = listOf(Tab.Discover, Tab.Likes, Tab.Matches, Tab.Profile)
 
 @Composable
-private fun MainTabs() {
+private fun MainTabs(openChatId: String? = null, onChatConsumed: () -> Unit = {}) {
     val nav = rememberNavController()
     val backStack by nav.currentBackStackEntryAsState()
     val currentRoute = backStack?.destination?.route
     val showBar = currentRoute in TABS.map { it.route }
+
+    // A tapped message notification asks us to open a specific chat.
+    LaunchedEffect(openChatId) {
+        if (!openChatId.isNullOrBlank()) {
+            nav.navigate("chat/$openChatId") { launchSingleTop = true }
+            onChatConsumed()
+        }
+    }
 
     // Unread-chat count for the Matches tab badge.
     val matchesVm: MatchesViewModel = viewModel()

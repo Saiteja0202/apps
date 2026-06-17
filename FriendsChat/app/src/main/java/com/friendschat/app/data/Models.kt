@@ -34,6 +34,16 @@ data class ChatUser(
 ) {
     val isFreeNow: Boolean get() = freeUntil > System.currentTimeMillis()
 
+    /**
+     * "Online now" for the status dot. Requires both the online flag AND a fresh
+     * lastSeen heartbeat (within ~2.5 min). The freshness guard means a stale
+     * online=true left behind by an app that was killed/crashed (which never got
+     * to write online=false) correctly reads as offline once heartbeats stop.
+     */
+    val isOnline: Boolean
+        get() = online && lastSeen != null &&
+            System.currentTimeMillis() - lastSeen.time < 150_000L
+
     /** "New here" = joined within the last 7 days. */
     val isNew: Boolean get() = joinedAt > 0L && joinedAt > System.currentTimeMillis() - 7L * 86_400_000L
 
