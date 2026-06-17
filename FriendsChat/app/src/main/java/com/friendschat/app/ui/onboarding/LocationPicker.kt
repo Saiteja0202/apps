@@ -1,17 +1,21 @@
 package com.friendschat.app.ui.onboarding
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,19 +24,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
-private const val MAX_VISIBLE = 100
+private const val MAX_SUGGESTIONS = 6
 
 /**
  * Reusable cascading location selector used by both onboarding and Edit Profile.
  * Country list and the selected country's cities come live from
- * [LocationViewModel]; picking a country reloads the city list in real time.
+ * [LocationViewModel]; the city list reloads automatically whenever the country
+ * text matches a known country.
  *
- * Both fields are freely editable — you can type to filter, pick from the list,
- * or clear the text entirely. The city list reloads automatically whenever the
- * country text matches a known country (typed or picked).
+ * Both fields are ordinary editable text fields — you can type to filter, tap a
+ * suggestion, clear with the ✕, or delete freely.
  */
 @Composable
 fun LocationPicker(
@@ -43,7 +50,7 @@ fun LocationPicker(
     onCity: (String) -> Unit
 ) {
     // Load the matching city list whenever a valid country is set — whether the
-    // user typed it in full or picked it from the dropdown.
+    // user typed it in full or picked it from the suggestions.
     LaunchedEffect(country, locVm.countries) {
         if (country.isNotBlank() && locVm.countries.any { it.equals(country, ignoreCase = true) }) {
             locVm.loadCities(country)
@@ -51,7 +58,7 @@ fun LocationPicker(
     }
 
     Column {
-        SearchableDropdown(
+        SearchableField(
             label = "Country",
             selected = country,
             options = locVm.countries,
@@ -60,7 +67,7 @@ fun LocationPicker(
             onValueChange = onCountry
         )
         Spacer(Modifier.height(12.dp))
-        SearchableDropdown(
+        SearchableField(
             label = when {
                 country.isBlank() -> "City (pick a country first)"
                 locVm.cities.isNotEmpty() -> "City (${locVm.cities.size} available — type to search)"
@@ -80,16 +87,16 @@ fun LocationPicker(
 }
 
 /**
- * Type-to-filter dropdown that stays smooth with thousands of options by showing
- * only the first [MAX_VISIBLE] matches — every entry is still reachable by typing.
+ * An always-editable text field with type-to-filter suggestions shown inline.
  *
- * It's a fully controlled field: [selected] is the displayed text and every edit
- * (typing, deleting, or picking an option) is reported through [onValueChange],
- * so the caller's state always reflects exactly what's on screen.
+ * Crucially it does NOT use ExposedDropdownMenuBox: that opens a focusable popup
+ * which steals focus from the field, leaving you unable to keep typing or delete.
+ * Here [selected] is the displayed text, every edit flows straight back through
+ * [onValueChange], the ✕ clears it, and suggestions are tapped via [pointerInput]
+ * (which doesn't grab focus) so editing always works.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchableDropdown(
+fun SearchableField(
     label: String,
     selected: String,
     options: List<String>,
@@ -97,35 +104,62 @@ fun SearchableDropdown(
     enabled: Boolean,
     onValueChange: (String) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    val filtered = remember(selected, options) {
-        if (selected.isBlank()) options.take(MAX_VISIBLE)
-        else options.filter { it.contains(selected, ignoreCase = true) }.take(MAX_VISIBLE)
-    }
+    val focusManager = LocalFocusManager.current
+    var focused by remember { mutableStateOf(false) }
 
-    ExposedDropdownMenuBox(
-        expanded = expanded && enabled,
-        onExpandedChange = { if (enabled) expanded = it }
-    ) {
+    val suggestions = remember(selected, options) {
+        val base = if (selected.isBlank()) options
+        else options.filter { it.contains(selected, ignoreCase = true) }
+        base.take(MAX_SUGGESTIONS)
+    }
+    // Don't bother showing the list once the text already is an exact option.
+    val showSuggestions = focused && enabled && suggestions.isNotEmpty() &&
+        !(suggestions.size == 1 && suggestions.first().equals(selected, ignoreCase = true))
+
+    Column {
         OutlinedTextField(
             value = selected,
-            onValueChange = { onValueChange(it); expanded = true },
+            onValueChange = onValueChange,
             label = { Text(label) },
             singleLine = true,
             enabled = enabled,
             trailingIcon = {
-                if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
-                else ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                when {
+                    loading -> CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                    selected.isNotEmpty() && enabled -> IconButton(onClick = { onValueChange("") }) {
+                        Icon(Icons.Filled.Close, contentDescription = "Clear")
+                    }
+                }
             },
-            modifier = Modifier.menuAnchor().fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { focused = it.isFocused }
         )
-        if (filtered.isNotEmpty()) {
-            ExposedDropdownMenu(expanded = expanded && enabled, onDismissRequest = { expanded = false }) {
-                filtered.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = { onValueChange(option); expanded = false }
-                    )
+        if (showSuggestions) {
+            Surface(
+                tonalElevation = 3.dp,
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+            ) {
+                Column {
+                    suggestions.forEach { option ->
+                        Text(
+                            option,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                // pointerInput taps don't request focus, so the
+                                // field stays focused and the tap isn't cancelled.
+                                .pointerInput(option) {
+                                    detectTapGestures {
+                                        onValueChange(option)
+                                        focusManager.clearFocus()
+                                    }
+                                }
+                                .padding(horizontal = 16.dp, vertical = 12.dp)
+                        )
+                    }
                 }
             }
         }

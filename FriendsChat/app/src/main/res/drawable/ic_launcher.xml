@@ -19,12 +19,14 @@
         </aapt:attr>
     </path>
 
-    <!-- Soft glow blob behind the heart -->
+    <!-- "Z" for GenZ, sitting in the background behind the heart -->
     <path
-        android:fillColor="#33FFFFFF"
-        android:pathData="M54,30 m-30,0 a30,30 0 1,0 60,0 a30,30 0 1,0 -60,0" />
+        android:fillColor="#CC5B34C8"
+        android:pathData="M22,22 L86,22 L86,36 L22,36 Z
+                          M66,36 L86,36 L42,76 L22,76 Z
+                          M22,76 L86,76 L86,90 L22,90 Z" />
 
-    <!-- Heart -->
+    <!-- Heart (flat, no glow/shadow behind it) -->
     <path
         android:fillColor="#FFFFFFFF"
         android:pathData="M54,42 c-6,-12 -26,-10 -26,8 c0,12 14,22 26,30 c12,-8 26,-18 26,-30 c0,-18 -20,-20 -26,-8 z" />
