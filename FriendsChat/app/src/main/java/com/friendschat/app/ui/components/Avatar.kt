@@ -53,27 +53,47 @@ fun Avatar(
     size: Dp = 48.dp,
     mood: String = "",
     live: Boolean = false,
+    online: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val ring = if (live) LiveGreen else moodColor(mood)
     val ringMod = if (ring != null) Modifier.border(2.5.dp, ring, CircleShape) else Modifier
-    val base = modifier.size(size).then(ringMod).clip(CircleShape)
+    val base = Modifier.size(size).then(ringMod).clip(CircleShape)
 
-    if (photoUrl.isNotBlank()) {
-        AsyncImage(
-            model = photoUrl,
-            contentDescription = name,
-            contentScale = ContentScale.Crop,
-            modifier = base
-        )
-    } else {
-        val initial = name.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "?"
-        val c = palette[(name.hashCode().let { if (it < 0) -it else it }) % palette.size]
-        Box(
-            modifier = base.background(Brush.linearGradient(listOf(c, c.copy(alpha = 0.7f)))),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(initial, color = Color.White, fontWeight = FontWeight.Bold, fontSize = (size.value / 2.3f).sp)
+    Box(modifier) {
+        if (photoUrl.isNotBlank()) {
+            AsyncImage(
+                model = photoUrl,
+                contentDescription = name,
+                contentScale = ContentScale.Crop,
+                modifier = base
+            )
+        } else {
+            val initial = name.trim().firstOrNull()?.uppercaseChar()?.toString() ?: "?"
+            val c = palette[(name.hashCode().let { if (it < 0) -it else it }) % palette.size]
+            Box(
+                modifier = base.background(Brush.linearGradient(listOf(c, c.copy(alpha = 0.7f)))),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(initial, color = Color.White, fontWeight = FontWeight.Bold, fontSize = (size.value / 2.3f).sp)
+            }
         }
+        if (online) OnlineDot(size, Modifier.align(Alignment.BottomEnd))
+    }
+}
+
+/** WhatsApp-style online status: a green dot with a soft glow halo + white cutout. */
+@Composable
+private fun OnlineDot(avatarSize: Dp, modifier: Modifier = Modifier) {
+    val dot = (avatarSize.value * 0.30f).dp
+    val halo = (avatarSize.value * 0.50f).dp
+    Box(modifier.size(halo), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(halo).clip(CircleShape).background(LiveGreen.copy(alpha = 0.30f)))
+        Box(
+            Modifier.size(dot).clip(CircleShape)
+                .background(Color.White)
+                .border((avatarSize.value * 0.02f).dp, Color.White, CircleShape)
+        )
+        Box(Modifier.size(dot * 0.74f).clip(CircleShape).background(LiveGreen))
     }
 }

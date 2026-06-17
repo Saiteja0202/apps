@@ -98,4 +98,7 @@ dependencies {
 
     // Google Mobile Ads (AdMob) — rewarded ads
     implementation("com.google.android.gms:play-services-ads:23.2.0")
+
+    // WorkManager — periodic background check for new messages (app-closed notifications)
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
 }

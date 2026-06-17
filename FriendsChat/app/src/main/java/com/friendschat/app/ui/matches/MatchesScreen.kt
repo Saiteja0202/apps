@@ -84,7 +84,8 @@ fun MatchesScreen(
                         Avatar(
                             name = if (row.deleted) "?" else row.title,
                             photoUrl = if (row.deleted) "" else row.photoUrl,
-                            size = 56.dp
+                            size = 56.dp,
+                            online = row.online && !row.deleted
                         )
                         Spacer(Modifier.width(14.dp))
                         Column(Modifier.weight(1f)) {
