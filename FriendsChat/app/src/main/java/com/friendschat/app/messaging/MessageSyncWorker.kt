@@ -32,7 +32,7 @@ class MessageSyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorke
             return Result.retry()
         }
         for (doc in snap.documents) {
-            val chat = doc.toObject(Chat::class.java) ?: continue
+            val chat = runCatching { doc.toObject(Chat::class.java) }.getOrNull() ?: continue
             val msgAt = chat.lastMessageTime?.time ?: continue
             if (chat.lastMessageSenderId.isBlank() || chat.lastMessageSenderId == uid) continue
             if (!chat.hasUnreadFor(uid)) continue

@@ -38,7 +38,7 @@ object MessageNotifier {
                 if (err != null || snap == null) return@addSnapshotListener
                 val firstLoad = !primed
                 for (doc in snap.documents) {
-                    val chat = doc.toObject(Chat::class.java) ?: continue
+                    val chat = runCatching { doc.toObject(Chat::class.java) }.getOrNull() ?: continue
                     val msgAt = chat.lastMessageTime?.time ?: continue
 
                     if (firstLoad) {

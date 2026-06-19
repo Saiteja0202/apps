@@ -52,7 +52,7 @@ class ChatRepository {
             .addSnapshotListener { snap, err ->
                 if (err != null) { trySend(emptyList()); return@addSnapshotListener }
                 val chats = snap?.documents
-                    ?.mapNotNull { it.toObject(Chat::class.java) }
+                    ?.mapNotNull { runCatching { it.toObject(Chat::class.java) }.getOrNull() }
                     ?.sortedByDescending { it.lastMessageTime?.time ?: 0L }
                     ?: emptyList()
                 trySend(chats)
@@ -61,8 +61,8 @@ class ChatRepository {
     }
 
     suspend fun getChat(chatId: String): Chat? =
-        db.collection("chats").document(chatId).get().await()
-            .toObject(Chat::class.java)
+        runCatching { db.collection("chats").document(chatId).get().await().toObject(Chat::class.java) }
+            .getOrNull()
 
     /** Live view of the signed-in user's own profile document. */
     fun observeMe(): Flow<ChatUser?> = callbackFlow {
@@ -148,7 +148,7 @@ class ChatRepository {
             .addSnapshotListener { snap, err ->
                 if (err != null) { trySend(emptyList()); return@addSnapshotListener }
                 val msgs = snap?.documents
-                    ?.mapNotNull { it.toObject(Message::class.java) }
+                    ?.mapNotNull { runCatching { it.toObject(Message::class.java) }.getOrNull() }
                     ?: emptyList()
                 trySend(msgs)
             }
@@ -160,7 +160,7 @@ class ChatRepository {
         val reg = db.collection("chats").document(chatId)
             .addSnapshotListener { snap, err ->
                 if (err != null) { trySend(null); return@addSnapshotListener }
-                trySend(snap?.toObject(Chat::class.java))
+                trySend(snap?.let { runCatching { it.toObject(Chat::class.java) }.getOrNull() })
             }
         awaitClose { reg.remove() }
     }

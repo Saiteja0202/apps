@@ -116,7 +116,10 @@ data class Chat(
     val lastMessageSenderId: String = "",          // uid of who sent the last message
     val typing: Map<String, Long> = emptyMap(),
     val draft: Map<String, String> = emptyMap(),   // live typing preview
-    val lastRead: Map<String, @JvmSuppressWildcards Timestamp> = emptyMap(), // uid -> when they last opened the chat
+    // uid -> when they last opened the chat. Kept as Any (Firestore Timestamp at
+    // runtime) because Firestore can't reliably deserialize Timestamp values
+    // nested in a typed Map — a typed map here throws and crashes toObject().
+    val lastRead: Map<String, @JvmSuppressWildcards Any?> = emptyMap(),
     @ServerTimestamp val lastMessageTime: Date? = null
 ) {
     fun titleFor(currentUid: String): String {
@@ -132,7 +135,7 @@ data class Chat(
     fun hasUnreadFor(uid: String): Boolean {
         val lastMsgAt = lastMessageTime?.time ?: return false
         if (lastMessageSenderId.isBlank() || lastMessageSenderId == uid) return false
-        val readAt = lastRead[uid]?.toDate()?.time ?: 0L
+        val readAt = (lastRead[uid] as? Timestamp)?.toDate()?.time ?: 0L
         return lastMsgAt > readAt
     }
 }

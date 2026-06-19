@@ -48,12 +48,14 @@ class FriendsChatApp : Application() {
         // App-level message notifications: watch chats whenever someone is signed
         // in (and stop on sign-out). Runs as long as the process is alive.
         FirebaseAuth.getInstance().addAuthStateListener { auth ->
-            if (auth.currentUser != null) {
-                MessageNotifier.start(this)          // live notifications while running
-                MessageSyncWorker.schedule(this)     // periodic check while closed
-            } else {
-                MessageNotifier.stop()
-                MessageSyncWorker.cancel(this)
+            runCatching {
+                if (auth.currentUser != null) {
+                    MessageNotifier.start(this)          // live notifications while running
+                    MessageSyncWorker.schedule(this)     // periodic check while closed
+                } else {
+                    MessageNotifier.stop()
+                    MessageSyncWorker.cancel(this)
+                }
             }
         }
     }
