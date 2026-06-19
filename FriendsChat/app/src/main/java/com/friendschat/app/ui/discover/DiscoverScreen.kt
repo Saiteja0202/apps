@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Block
@@ -28,7 +30,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,10 +38,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -52,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.friendschat.app.data.ChatUser
 import com.friendschat.app.data.DatingRepository
@@ -99,21 +102,33 @@ fun DiscoverScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("GenZ", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary) },
-                actions = {
-                    IconButton(onClick = { showFilters = true }) {
-                        Icon(
-                            Icons.Filled.Tune,
-                            contentDescription = "Filters",
-                            tint = if (vm.filtersActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+            Surface(color = MaterialTheme.colorScheme.surface) {
+                Column {
+                    Row(
+                        Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 14.dp, bottom = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                "GENZ",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 3.sp
+                            )
+                            Text("Discover", style = MaterialTheme.typography.displaySmall)
+                        }
+                        IconButton(onClick = { showFilters = true }) {
+                            Icon(
+                                Icons.Filled.Tune,
+                                contentDescription = "Filters",
+                                tint = if (vm.filtersActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
-            )
+                    HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+                }
+            }
         }
     ) { inner ->
         Box(Modifier.fillMaxSize().padding(inner)) {
@@ -148,9 +163,10 @@ fun DiscoverScreen(
                             PulsingDot(9.dp)
                             Spacer(Modifier.width(6.dp))
                             Text(
-                                "Live now · ${liveUsers.size} free to chat",
+                                "LIVE NOW · ${liveUsers.size} FREE TO CHAT",
                                 style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.sp,
                                 color = LiveGreen
                             )
                         }
@@ -182,23 +198,26 @@ fun DiscoverScreen(
                     Spacer(Modifier.height(20.dp))
                     Row(
                         Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally)
+                        horizontalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
-                        FloatingActionButton(
+                        OutlinedButton(
                             onClick = { vm.pass(current) },
-                            containerColor = MaterialTheme.colorScheme.surface,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.weight(1f).height(56.dp),
+                            shape = RoundedCornerShape(50),
+                            border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline)
                         ) {
-                            Icon(Icons.Filled.Close, "Pass", modifier = Modifier.size(30.dp))
+                            Icon(Icons.Filled.Close, "Pass", modifier = Modifier.size(22.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Spacer(Modifier.width(8.dp))
+                            Text("Pass", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
-                        FloatingActionButton(
+                        Button(
                             onClick = { openLike(current, "") },
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(64.dp)
+                            modifier = Modifier.weight(1f).height(56.dp),
+                            shape = RoundedCornerShape(50)
                         ) {
-                            Icon(Icons.Filled.Favorite, "Like", modifier = Modifier.size(30.dp))
+                            Icon(Icons.Filled.Favorite, "Like", modifier = Modifier.size(22.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text("Like", fontWeight = FontWeight.Bold)
                         }
                     }
                     Spacer(Modifier.height(12.dp))

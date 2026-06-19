@@ -426,7 +426,12 @@ private fun MessageBubble(
     Column(Modifier.fillMaxWidth(), horizontalAlignment = if (mine) Alignment.End else Alignment.Start) {
         Box(
             Modifier.widthIn(max = 300.dp).clip(shape)
-                .then(if (mine) Modifier.background(brandGradient()) else Modifier.background(MaterialTheme.colorScheme.surface))
+                .then(
+                    if (mine) Modifier.background(brandGradient())
+                    else Modifier
+                        .background(MaterialTheme.colorScheme.surface)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, shape)
+                )
                 .combinedClickable(onClick = { if (isMedia) onOpenMedia(msg.mediaUrl) }, onLongClick = onLongPress)
         ) {
             Column(Modifier.padding(10.dp)) {

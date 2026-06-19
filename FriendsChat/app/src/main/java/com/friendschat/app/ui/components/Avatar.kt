@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
 private val palette = listOf(
-    Color(0xFF5A5CF0), Color(0xFF8B5CF0), Color(0xFFFF6B6B),
-    Color(0xFF18B6A6), Color(0xFFF59E0B), Color(0xFF3CC8FF), Color(0xFFE05CC0)
+    Color(0xFFC2603F), Color(0xFF6F8061), Color(0xFFCC9A3D),
+    Color(0xFFB07A56), Color(0xFF9A6A4E), Color(0xFF7E8A66), Color(0xFFC78A5A)
 )
 
 /** Mood -> ring color. Empty mood = no ring. */
@@ -43,8 +43,8 @@ fun moodLabel(mood: String): String = when (mood) {
     else -> "No mood"
 }
 
-/** Green = "live / free to chat right now". */
-val LiveGreen = Color(0xFF2FD15B)
+/** Leaf-green = "live / free to chat right now" (warmed to fit the paper theme). */
+val LiveGreen = Color(0xFF5C9A4F)
 
 @Composable
 fun Avatar(

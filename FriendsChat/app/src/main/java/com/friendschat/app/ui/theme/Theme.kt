@@ -1,82 +1,101 @@
 package com.friendschat.app.ui.theme
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 
 /*
- * "Aurora" — a soft, pleasant pastel theme for GENZ. Airy lavender-white light
- * mode and a calm indigo-night dark mode, with a friendly periwinkle → pink
- * brand gradient and mint accents. Designed to feel gentle and welcoming.
+ * "Paperback" — a warm, editorial theme for GENZ. Think a well-loved paperback:
+ * a cream/sand canvas, espresso ink, and a terracotta → mustard accent family with
+ * a calm sage support colour. Big serif display type pairs with a clean sans body
+ * for a friendly, magazine-like feel that doesn't imitate any mainstream app.
  */
 
-// Brand accents (shared)
-val Periwinkle = Color(0xFF7C6CF0)
-val PeriwinkleLight = Color(0xFFB8AEFF)
-val Mint = Color(0xFF2FBFA8)
-val MintLight = Color(0xFF6FE0CE)
-val Blossom = Color(0xFFFF8FB1)
-val BlossomLight = Color(0xFFFFB0C8)
-val SeenBlue = Color(0xFF3CC8FF)
+// Brand accents (shared). Names kept for backwards-compatibility with callers.
+val Periwinkle = Color(0xFFC2603F)        // terracotta — primary ink-accent
+val PeriwinkleLight = Color(0xFFE5896A)   // warm clay (dark mode primary)
+val Mint = Color(0xFF6F8061)              // sage — secondary
+val MintLight = Color(0xFFA9BC97)
+val Blossom = Color(0xFFCC9A3D)           // mustard / gold — tertiary highlight
+val BlossomLight = Color(0xFFE6C46E)
+val SeenBlue = Color(0xFF3F9E92)          // muted teal "seen" tick (warm-friendly)
 
 private val LightColors = lightColorScheme(
     primary = Periwinkle,
     onPrimary = Color.White,
-    primaryContainer = Color(0xFFE7E3FF),
-    onPrimaryContainer = Color(0xFF241A66),
+    primaryContainer = Color(0xFFF6DCCF),
+    onPrimaryContainer = Color(0xFF4A1E0C),
     secondary = Mint,
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFCFF5EE),
-    onSecondaryContainer = Color(0xFF00382F),
+    secondaryContainer = Color(0xFFDCE6CF),
+    onSecondaryContainer = Color(0xFF2A331E),
     tertiary = Blossom,
-    onTertiary = Color.White,
-    tertiaryContainer = Color(0xFFFFE0E9),
-    onTertiaryContainer = Color(0xFF5A1733),
-    background = Color(0xFFF8F6FF),
-    onBackground = Color(0xFF1C1B2E),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF1C1B2E),
-    surfaceVariant = Color(0xFFECE9F7),
-    onSurfaceVariant = Color(0xFF5E5A72),
-    outline = Color(0xFFD9D5EC),
-    error = Color(0xFFE5484D)
+    onTertiary = Color(0xFF3B2D08),
+    tertiaryContainer = Color(0xFFF4E4BE),
+    onTertiaryContainer = Color(0xFF4A3A12),
+    background = Color(0xFFFAF3E8),
+    onBackground = Color(0xFF2C2620),
+    surface = Color(0xFFFFFCF5),
+    onSurface = Color(0xFF2C2620),
+    surfaceVariant = Color(0xFFEFE5D4),
+    onSurfaceVariant = Color(0xFF6B5F50),
+    outline = Color(0xFFD8C9B2),
+    error = Color(0xFFB3382C)
 )
 
 private val DarkColors = darkColorScheme(
     primary = PeriwinkleLight,
-    onPrimary = Color(0xFF272063),
-    primaryContainer = Color(0xFF463C8C),
-    onPrimaryContainer = Color(0xFFE7E3FF),
+    onPrimary = Color(0xFF4A1E0C),
+    primaryContainer = Color(0xFF6E3320),
+    onPrimaryContainer = Color(0xFFF6DCCF),
     secondary = MintLight,
-    onSecondary = Color(0xFF00382F),
-    secondaryContainer = Color(0xFF1F5247),
-    onSecondaryContainer = Color(0xFFCFF5EE),
+    onSecondary = Color(0xFF2A331E),
+    secondaryContainer = Color(0xFF44523A),
+    onSecondaryContainer = Color(0xFFDCE6CF),
     tertiary = BlossomLight,
-    onTertiary = Color(0xFF5A1733),
-    tertiaryContainer = Color(0xFF7A3350),
-    onTertiaryContainer = Color(0xFFFFE0E9),
-    background = Color(0xFF131221),
-    onBackground = Color(0xFFE9E7F7),
-    surface = Color(0xFF1C1B2E),
-    onSurface = Color(0xFFE9E7F7),
-    surfaceVariant = Color(0xFF2C2A40),
-    onSurfaceVariant = Color(0xFFB7B2CC),
-    outline = Color(0xFF433F58),
-    error = Color(0xFFFF6B81)
+    onTertiary = Color(0xFF3B2D08),
+    tertiaryContainer = Color(0xFF5E4A1E),
+    onTertiaryContainer = Color(0xFFF4E4BE),
+    background = Color(0xFF1A1610),
+    onBackground = Color(0xFFEFE6D6),
+    surface = Color(0xFF241F18),
+    onSurface = Color(0xFFEFE6D6),
+    surfaceVariant = Color(0xFF342D24),
+    onSurfaceVariant = Color(0xFFC3B5A1),
+    outline = Color(0xFF4A4135),
+    error = Color(0xFFFF8A7A)
+)
+
+/* ---- Editorial typography: a serif display voice over a clean sans body. ---- */
+private val Serif = FontFamily.Serif
+private val Base = Typography()
+
+private val EditorialTypography = Base.copy(
+    displayLarge = Base.displayLarge.copy(fontFamily = Serif, fontWeight = FontWeight.Bold),
+    displayMedium = Base.displayMedium.copy(fontFamily = Serif, fontWeight = FontWeight.Bold),
+    displaySmall = Base.displaySmall.copy(fontFamily = Serif, fontWeight = FontWeight.Bold),
+    headlineLarge = Base.headlineLarge.copy(fontFamily = Serif, fontWeight = FontWeight.Bold),
+    headlineMedium = Base.headlineMedium.copy(fontFamily = Serif, fontWeight = FontWeight.SemiBold),
+    headlineSmall = Base.headlineSmall.copy(fontFamily = Serif, fontWeight = FontWeight.SemiBold),
+    titleLarge = Base.titleLarge.copy(fontFamily = Serif, fontWeight = FontWeight.Bold)
 )
 
 @Composable
 fun EmberTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = if (darkTheme) DarkColors else LightColors,
+        typography = EditorialTypography,
         content = content
     )
 }
 
-/** Signature gradient: periwinkle → pink. Used on brand surfaces and chat bubbles. */
+/** Signature gradient: terracotta → mustard. Used on brand surfaces and chat bubbles. */
 @Composable
 fun brandGradient(): Brush = Brush.horizontalGradient(
     listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.tertiary)
@@ -88,7 +107,7 @@ fun pageGradient(): Brush = Brush.verticalGradient(
     listOf(MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.surfaceVariant)
 )
 
-/** Soft three-stop aurora gradient used behind the onboarding flow. */
+/** Soft three-stop warm gradient used behind the onboarding flow. */
 @Composable
 fun auroraGradient(): Brush = Brush.linearGradient(
     listOf(
