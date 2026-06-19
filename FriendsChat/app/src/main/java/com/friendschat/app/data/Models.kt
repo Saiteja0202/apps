@@ -1,6 +1,7 @@
 package com.friendschat.app.data
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
@@ -40,6 +41,7 @@ data class ChatUser(
      * online=true left behind by an app that was killed/crashed (which never got
      * to write online=false) correctly reads as offline once heartbeats stop.
      */
+    @get:Exclude
     val isOnline: Boolean
         get() = online && lastSeen != null &&
             System.currentTimeMillis() - lastSeen.time < 150_000L
