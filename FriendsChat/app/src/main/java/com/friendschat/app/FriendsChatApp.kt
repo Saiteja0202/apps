@@ -30,6 +30,7 @@ class FriendsChatApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        CrashGuard.install(this)   // capture uncaught crashes for on-screen reporting
         createNotificationChannel()
         // Initialise the Google Mobile Ads SDK, then preload a rewarded ad.
         MobileAds.initialize(this) { RewardedAdManager.preload(this) }
