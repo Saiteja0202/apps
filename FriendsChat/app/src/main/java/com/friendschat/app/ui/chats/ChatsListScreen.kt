@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Chat
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.automirrored.rounded.Chat
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -61,7 +61,7 @@ fun ChatsListScreen(
                 ),
                 actions = {
                     IconButton(onClick = onOpenSettings) {
-                        Icon(Icons.Filled.Person, contentDescription = "Profile & settings")
+                        Icon(Icons.Rounded.Person, contentDescription = "Profile & settings")
                     }
                 }
             )
@@ -72,7 +72,7 @@ fun ChatsListScreen(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ) {
-                Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = null)
+                Icon(Icons.AutoMirrored.Rounded.Chat, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
                 Text("New chat", fontWeight = FontWeight.Bold)
             }

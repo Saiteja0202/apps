@@ -20,11 +20,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Block
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Flag
-import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.rounded.Block
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Flag
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -120,7 +120,7 @@ fun DiscoverScreen(
                         }
                         IconButton(onClick = { showFilters = true }) {
                             Icon(
-                                Icons.Filled.Tune,
+                                Icons.Rounded.Tune,
                                 contentDescription = "Filters",
                                 tint = if (vm.filtersActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -206,7 +206,7 @@ fun DiscoverScreen(
                             shape = RoundedCornerShape(50),
                             border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline)
                         ) {
-                            Icon(Icons.Filled.Close, "Pass", modifier = Modifier.size(22.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Icon(Icons.Rounded.Close, "Pass", modifier = Modifier.size(22.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             Spacer(Modifier.width(8.dp))
                             Text("Pass", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
@@ -215,7 +215,7 @@ fun DiscoverScreen(
                             modifier = Modifier.weight(1f).height(56.dp),
                             shape = RoundedCornerShape(50)
                         ) {
-                            Icon(Icons.Filled.Favorite, "Like", modifier = Modifier.size(22.dp))
+                            Icon(Icons.Rounded.Favorite, "Like", modifier = Modifier.size(22.dp))
                             Spacer(Modifier.width(8.dp))
                             Text("Like", fontWeight = FontWeight.Bold)
                         }
@@ -223,12 +223,12 @@ fun DiscoverScreen(
                     Spacer(Modifier.height(12.dp))
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                         TextButton(onClick = { reportTarget = current }) {
-                            Icon(Icons.Filled.Flag, null, modifier = Modifier.size(18.dp))
+                            Icon(Icons.Rounded.Flag, null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(4.dp)); Text("Report")
                         }
                         Spacer(Modifier.width(8.dp))
                         TextButton(onClick = { blockTarget = current }) {
-                            Icon(Icons.Filled.Block, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.error)
+                            Icon(Icons.Rounded.Block, null, modifier = Modifier.size(18.dp), tint = MaterialTheme.colorScheme.error)
                             Spacer(Modifier.width(4.dp)); Text("Block", color = MaterialTheme.colorScheme.error)
                         }
                     }

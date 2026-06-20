@@ -16,11 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Work
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.Work
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -73,11 +73,11 @@ fun ProfileCard(
         // Sticker tag row — relationship intent, work, place.
         val tags = buildList {
             RelationshipStatus.label(user.relationshipStatus).takeIf { it.isNotBlank() }
-                ?.let { add(Triple<ImageVector?, String, Int>(Icons.Filled.FavoriteBorder, it, 0)) }
+                ?.let { add(Triple<ImageVector?, String, Int>(Icons.Rounded.FavoriteBorder, it, 0)) }
             user.jobTitle.takeIf { it.isNotBlank() }
-                ?.let { add(Triple<ImageVector?, String, Int>(Icons.Filled.Work, it, 1)) }
+                ?.let { add(Triple<ImageVector?, String, Int>(Icons.Rounded.Work, it, 1)) }
             user.location.takeIf { it.isNotBlank() }
-                ?.let { add(Triple<ImageVector?, String, Int>(Icons.Filled.LocationOn, it, 2)) }
+                ?.let { add(Triple<ImageVector?, String, Int>(Icons.Rounded.LocationOn, it, 2)) }
         }
         if (tags.isNotEmpty()) {
             androidx.compose.foundation.layout.FlowRow(
@@ -163,7 +163,7 @@ private fun HeroPhoto(user: ChatUser, photoUrl: String?, starred: Boolean, onLik
                 if (starred) {
                     Spacer(Modifier.width(8.dp))
                     Icon(
-                        Icons.Filled.Star,
+                        Icons.Rounded.Star,
                         contentDescription = "Verified by the community",
                         tint = Color(0xFFE6C46E),
                         modifier = Modifier.size(26.dp)
@@ -279,7 +279,7 @@ private fun LikeHeart(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(
-                Icons.Filled.Favorite,
+                Icons.Rounded.Favorite,
                 contentDescription = "Like this",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(22.dp)
@@ -312,7 +312,7 @@ private fun StickerTag(icon: ImageVector?, label: String, kind: Int) {
 @Composable
 fun ProfileFactRow(jobTitle: String, location: String) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        if (jobTitle.isNotBlank()) StickerTag(Icons.Filled.Work, jobTitle, 1)
-        if (location.isNotBlank()) StickerTag(Icons.Filled.LocationOn, location, 2)
+        if (jobTitle.isNotBlank()) StickerTag(Icons.Rounded.Work, jobTitle, 1)
+        if (location.isNotBlank()) StickerTag(Icons.Rounded.LocationOn, location, 2)
     }
 }

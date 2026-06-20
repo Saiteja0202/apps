@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -127,7 +127,7 @@ fun SearchableField(
                 when {
                     loading -> CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
                     selected.isNotEmpty() && enabled -> IconButton(onClick = { onValueChange("") }) {
-                        Icon(Icons.Filled.Close, contentDescription = "Clear")
+                        Icon(Icons.Rounded.Close, contentDescription = "Clear")
                     }
                 }
             },

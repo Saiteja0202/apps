@@ -19,13 +19,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Brightness6
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.Logout
+import androidx.compose.material.icons.rounded.Brightness6
+import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.DeleteForever
+import androidx.compose.material.icons.rounded.LightMode
+import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -80,7 +80,7 @@ fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = viewModel()) {
                 title = { Text("Profile & Settings", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -126,7 +126,7 @@ fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = viewModel()) {
                             )
                         } else {
                             Icon(
-                                Icons.Filled.PhotoCamera,
+                                Icons.Rounded.PhotoCamera,
                                 contentDescription = "Change photo",
                                 tint = Color.White,
                                 modifier = Modifier.size(20.dp)
@@ -155,14 +155,11 @@ fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = viewModel()) {
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                ThemeOption("Light", Icons.Filled.LightMode, ThemeState.mode == ThemeState.LIGHT, Modifier.weight(1f)) {
+                ThemeOption("Light", Icons.Rounded.LightMode, ThemeState.mode == ThemeState.LIGHT, Modifier.weight(1f)) {
                     ThemeState.set(context, ThemeState.LIGHT)
                 }
-                ThemeOption("Dark", Icons.Filled.DarkMode, ThemeState.mode == ThemeState.DARK, Modifier.weight(1f)) {
+                ThemeOption("Dark", Icons.Rounded.DarkMode, ThemeState.mode == ThemeState.DARK, Modifier.weight(1f)) {
                     ThemeState.set(context, ThemeState.DARK)
-                }
-                ThemeOption("System", Icons.Filled.Brightness6, ThemeState.mode == ThemeState.SYSTEM, Modifier.weight(1f)) {
-                    ThemeState.set(context, ThemeState.SYSTEM)
                 }
             }
 
@@ -202,7 +199,7 @@ fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = viewModel()) {
                 onClick = { vm.logout() },
                 modifier = Modifier.fillMaxWidth().height(50.dp)
             ) {
-                Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null)
+                Icon(Icons.AutoMirrored.Rounded.Logout, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
                 Text("Log out", fontWeight = FontWeight.Bold)
             }
@@ -212,7 +209,7 @@ fun SettingsScreen(onBack: () -> Unit, vm: SettingsViewModel = viewModel()) {
                 onClick = { vm.clearError(); deletePwd = ""; showDelete = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(Icons.Filled.DeleteForever, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+                Icon(Icons.Rounded.DeleteForever, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                 Spacer(Modifier.width(8.dp))
                 Text("Delete account", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
             }

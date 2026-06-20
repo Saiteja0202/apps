@@ -23,9 +23,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -123,7 +123,7 @@ fun EditProfileScreen(
                 title = { Text(if (onboarding) "Build your profile" else "Edit profile", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     if (!onboarding) IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -328,7 +328,7 @@ private fun FlowRowPhotos(
                     modifier = Modifier.align(Alignment.TopEnd).padding(4.dp).size(24.dp).clickable { onRemove(url) }
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(Icons.Filled.Close, "Remove", tint = Color.White, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Rounded.Close, "Remove", tint = Color.White, modifier = Modifier.size(16.dp))
                     }
                 }
             }
@@ -341,7 +341,7 @@ private fun FlowRowPhotos(
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     if (uploading) CircularProgressIndicator(modifier = Modifier.size(26.dp))
-                    else Icon(Icons.Filled.Add, "Add photo", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(34.dp))
+                    else Icon(Icons.Rounded.Add, "Add photo", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(34.dp))
                 }
             }
         }

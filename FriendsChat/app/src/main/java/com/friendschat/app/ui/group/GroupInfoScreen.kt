@@ -19,14 +19,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.PersonAdd
-import androidx.compose.material.icons.filled.PersonRemove
-import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.Logout
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.PersonAdd
+import androidx.compose.material.icons.rounded.PersonRemove
+import androidx.compose.material.icons.rounded.PhotoCamera
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -77,7 +77,7 @@ fun GroupInfoScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Group info", fontWeight = FontWeight.Bold) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") } },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.onSurface,
@@ -98,7 +98,7 @@ fun GroupInfoScreen(
                         Avatar(name = chat.name.ifBlank { "Group" }, photoUrl = chat.photoUrl, size = 100.dp)
                         if (vm.isAdmin) Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(32.dp).clickable { pickPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }) {
-                            Box(contentAlignment = Alignment.Center) { Icon(Icons.Filled.PhotoCamera, "Change photo", tint = Color.White, modifier = Modifier.size(18.dp)) }
+                            Box(contentAlignment = Alignment.Center) { Icon(Icons.Rounded.PhotoCamera, "Change photo", tint = Color.White, modifier = Modifier.size(18.dp)) }
                         }
                     }
                     Spacer(Modifier.height(12.dp))
@@ -106,7 +106,7 @@ fun GroupInfoScreen(
                         Text(chat.name.ifBlank { "Group" }, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         if (vm.isAdmin) {
                             Spacer(Modifier.width(6.dp))
-                            IconButton(onClick = { nameField = chat.name; renameDialog = true }) { Icon(Icons.Filled.Edit, "Rename", tint = MaterialTheme.colorScheme.primary) }
+                            IconButton(onClick = { nameField = chat.name; renameDialog = true }) { Icon(Icons.Rounded.Edit, "Rename", tint = MaterialTheme.colorScheme.primary) }
                         }
                     }
                     Text("${members.size} members", color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -115,7 +115,7 @@ fun GroupInfoScreen(
             }
             if (vm.isAdmin) item {
                 Row(Modifier.fillMaxWidth().clickable { addDialog = true }.padding(horizontal = 20.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.PersonAdd, null, tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.Rounded.PersonAdd, null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(14.dp)); Text("Add members", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold)
                 }
             }
@@ -129,13 +129,13 @@ fun GroupInfoScreen(
                         if (uid == chat.createdBy) Text("Admin", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelSmall)
                     }
                     if (vm.isAdmin && uid != vm.myUid) {
-                        IconButton(onClick = { vm.removeMember(uid) }) { Icon(Icons.Filled.PersonRemove, "Remove", tint = MaterialTheme.colorScheme.error) }
+                        IconButton(onClick = { vm.removeMember(uid) }) { Icon(Icons.Rounded.PersonRemove, "Remove", tint = MaterialTheme.colorScheme.error) }
                     }
                 }
             }
             item {
                 OutlinedButton(onClick = { vm.leave(onLeft) }, modifier = Modifier.fillMaxWidth().padding(20.dp).height(50.dp)) {
-                    Icon(Icons.AutoMirrored.Filled.Logout, null); Spacer(Modifier.width(8.dp)); Text("Leave group", fontWeight = FontWeight.Bold)
+                    Icon(Icons.AutoMirrored.Rounded.Logout, null); Spacer(Modifier.width(8.dp)); Text("Leave group", fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -164,7 +164,7 @@ fun GroupInfoScreen(
                             label = { Text("Email") }, singleLine = true, modifier = Modifier.weight(1f)
                         )
                         Spacer(Modifier.width(8.dp))
-                        IconButton(onClick = { vm.search() }) { Icon(Icons.Filled.Search, "Search", tint = MaterialTheme.colorScheme.primary) }
+                        IconButton(onClick = { vm.search() }) { Icon(Icons.Rounded.Search, "Search", tint = MaterialTheme.colorScheme.primary) }
                     }
                     vm.error?.let { Spacer(Modifier.height(6.dp)); Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
                     vm.result?.let { u ->
@@ -174,7 +174,7 @@ fun GroupInfoScreen(
                             Avatar(name = u.name, photoUrl = u.photoUrl, size = 38.dp, mood = u.mood)
                             Spacer(Modifier.width(12.dp)); Text(u.name, Modifier.weight(1f))
                             if (inGroup) Text("Already in", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
-                            else TextButton(onClick = { vm.addFound(); addDialog = false }) { Icon(Icons.Filled.Check, null); Spacer(Modifier.width(4.dp)); Text("Add") }
+                            else TextButton(onClick = { vm.addFound(); addDialog = false }) { Icon(Icons.Rounded.Check, null); Spacer(Modifier.width(4.dp)); Text("Add") }
                         }
                     }
                 }

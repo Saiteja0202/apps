@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MarkEmailRead
+import androidx.compose.material.icons.rounded.MarkEmailRead
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -39,7 +39,7 @@ fun VerifyEmailScreen(
     ) {
         Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(84.dp)) {
             Icon(
-                Icons.Filled.MarkEmailRead,
+                Icons.Rounded.MarkEmailRead,
                 contentDescription = null,
                 tint = Color.White,
                 modifier = Modifier.padding(20.dp)

@@ -30,28 +30,28 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Reply
-import androidx.compose.material.icons.filled.AttachFile
-import androidx.compose.material.icons.filled.Block
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.DoneAll
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Forward
-import androidx.compose.material.icons.filled.HourglassTop
-import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.InsertDriveFile
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.PlayCircle
-import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.Reply
+import androidx.compose.material.icons.rounded.AttachFile
+import androidx.compose.material.icons.rounded.Block
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Done
+import androidx.compose.material.icons.rounded.DoneAll
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Forward
+import androidx.compose.material.icons.rounded.HourglassTop
+import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material.icons.rounded.InsertDriveFile
+import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.Mic
+import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.PlayCircle
+import androidx.compose.material.icons.rounded.Schedule
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Send
+import androidx.compose.material.icons.rounded.Stop
+import androidx.compose.material.icons.rounded.Videocam
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -177,16 +177,16 @@ fun ChatScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = { if (searchMode) { searchMode = false; searchQuery = "" } else onBack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onPrimary)
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
                 actions = {
                     IconButton(onClick = { searchMode = !searchMode; if (!searchMode) searchQuery = "" }) {
-                        Icon(Icons.Filled.Search, contentDescription = "Search", tint = MaterialTheme.colorScheme.onPrimary)
+                        Icon(Icons.Rounded.Search, contentDescription = "Search", tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     Box {
                         IconButton(onClick = { moreMenu = true }) {
-                            Icon(Icons.Filled.MoreVert, contentDescription = "More", tint = MaterialTheme.colorScheme.onPrimary)
+                            Icon(Icons.Rounded.MoreVert, contentDescription = "More", tint = MaterialTheme.colorScheme.onPrimary)
                         }
                         DropdownMenu(expanded = moreMenu, onDismissRequest = { moreMenu = false }) {
                             if (!vm.isGroup) {
@@ -215,10 +215,10 @@ fun ChatScreen(
             Column {
                 if (vm.sending) LinearProgressIndicator(Modifier.fillMaxWidth())
                 if (recording) RecordingBar { recorder.cancel(); recording = false }
-                if (capsuleReveal > 0) Banner(Icons.Filled.HourglassTop, "Time capsule · unlocks ${formatLastSeen(Date(capsuleReveal))}") { capsuleReveal = 0 }
-                if (editing != null) Banner(Icons.Filled.Edit, "Editing message") { editing = null; input = "" }
+                if (capsuleReveal > 0) Banner(Icons.Rounded.HourglassTop, "Time capsule · unlocks ${formatLastSeen(Date(capsuleReveal))}") { capsuleReveal = 0 }
+                if (editing != null) Banner(Icons.Rounded.Edit, "Editing message") { editing = null; input = "" }
                 replyingTo?.let { r ->
-                    Banner(Icons.AutoMirrored.Filled.Reply, "Reply to ${r.senderName}: ${snippetOf(r)}") { replyingTo = null }
+                    Banner(Icons.AutoMirrored.Rounded.Reply, "Reply to ${r.senderName}: ${snippetOf(r)}") { replyingTo = null }
                 }
                 MessageInputBar(
                     value = input,
@@ -287,10 +287,10 @@ fun ChatScreen(
                         }
                     }
                     Spacer(Modifier.size(8.dp))
-                    MenuRow(Icons.AutoMirrored.Filled.Reply, "Reply") { replyingTo = m; menuFor = null }
-                    MenuRow(Icons.Filled.Forward, "Forward") { forwardSource = m; menuFor = null }
-                    if (mine && m.type == MessageType.TEXT && !m.isLocked) MenuRow(Icons.Filled.Edit, "Edit") { input = m.text; editing = m; menuFor = null }
-                    if (mine) MenuRow(Icons.Filled.Delete, "Delete", MaterialTheme.colorScheme.error) { vm.deleteMessage(m.id); menuFor = null }
+                    MenuRow(Icons.AutoMirrored.Rounded.Reply, "Reply") { replyingTo = m; menuFor = null }
+                    MenuRow(Icons.Rounded.Forward, "Forward") { forwardSource = m; menuFor = null }
+                    if (mine && m.type == MessageType.TEXT && !m.isLocked) MenuRow(Icons.Rounded.Edit, "Edit") { input = m.text; editing = m; menuFor = null }
+                    if (mine) MenuRow(Icons.Rounded.Delete, "Delete", MaterialTheme.colorScheme.error) { vm.deleteMessage(m.id); menuFor = null }
                 }
             },
             confirmButton = { TextButton(onClick = { menuFor = null }) { Text("Close") } }
@@ -328,9 +328,9 @@ fun ChatScreen(
                     Text("Lock your next message until:", color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Spacer(Modifier.size(8.dp))
                     val now = System.currentTimeMillis()
-                    MenuRow(Icons.Filled.Schedule, "In 1 hour") { capsuleReveal = now + 3_600_000L; capsuleDialog = false }
-                    MenuRow(Icons.Filled.Schedule, "In 1 day") { capsuleReveal = now + 86_400_000L; capsuleDialog = false }
-                    MenuRow(Icons.Filled.Schedule, "In 1 week") { capsuleReveal = now + 604_800_000L; capsuleDialog = false }
+                    MenuRow(Icons.Rounded.Schedule, "In 1 hour") { capsuleReveal = now + 3_600_000L; capsuleDialog = false }
+                    MenuRow(Icons.Rounded.Schedule, "In 1 day") { capsuleReveal = now + 86_400_000L; capsuleDialog = false }
+                    MenuRow(Icons.Rounded.Schedule, "In 1 week") { capsuleReveal = now + 604_800_000L; capsuleDialog = false }
                 }
             },
             confirmButton = { TextButton(onClick = { capsuleDialog = false }) { Text("Cancel") } }
@@ -379,7 +379,7 @@ private fun Banner(icon: androidx.compose.ui.graphics.vector.ImageVector, text: 
             Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
             Text(text, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface, maxLines = 1, style = MaterialTheme.typography.bodyMedium)
-            IconButton(onClick = onClose) { Icon(Icons.Filled.Close, contentDescription = "Cancel") }
+            IconButton(onClick = onClose) { Icon(Icons.Rounded.Close, contentDescription = "Cancel") }
         }
     }
 }
@@ -392,7 +392,7 @@ private fun InfoBar(message: String) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(Icons.Filled.Block, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
+            Icon(Icons.Rounded.Block, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
             Text(message, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
         }
@@ -403,7 +403,7 @@ private fun InfoBar(message: String) {
 private fun RecordingBar(onCancel: () -> Unit) {
     Surface(color = MaterialTheme.colorScheme.errorContainer) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Filled.Mic, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+            Icon(Icons.Rounded.Mic, contentDescription = null, tint = MaterialTheme.colorScheme.error)
             Spacer(Modifier.width(8.dp))
             Text("Recording… tap the stop button to send", Modifier.weight(1f), color = MaterialTheme.colorScheme.onErrorContainer)
             TextButton(onClick = onCancel) { Text("Cancel") }
@@ -456,11 +456,11 @@ private fun MessageBubble(
                 }
                 when {
                     msg.deleted -> Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Filled.Block, contentDescription = null, tint = metaColor, modifier = Modifier.size(15.dp))
+                        Icon(Icons.Rounded.Block, contentDescription = null, tint = metaColor, modifier = Modifier.size(15.dp))
                         Spacer(Modifier.width(5.dp)); Text("This message was deleted", color = metaColor, fontStyle = FontStyle.Italic)
                     }
                     locked -> Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Filled.Lock, contentDescription = null, tint = textColor, modifier = Modifier.size(18.dp))
+                        Icon(Icons.Rounded.Lock, contentDescription = null, tint = textColor, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(6.dp))
                         Column {
                             Text("Time capsule", color = textColor, fontWeight = FontWeight.Bold)
@@ -469,9 +469,9 @@ private fun MessageBubble(
                     }
                     msg.type == MessageType.IMAGE -> AsyncImage(model = msg.mediaUrl, contentDescription = "image",
                         modifier = Modifier.widthIn(max = 260.dp).heightIn(max = 320.dp).clip(RoundedCornerShape(10.dp)))
-                    msg.type == MessageType.VIDEO -> MediaCard(Icons.Filled.PlayCircle, msg.mediaName.ifBlank { "Video" }, "Tap to play · ${humanSize(msg.sizeBytes)}", textColor, metaColor)
+                    msg.type == MessageType.VIDEO -> MediaCard(Icons.Rounded.PlayCircle, msg.mediaName.ifBlank { "Video" }, "Tap to play · ${humanSize(msg.sizeBytes)}", textColor, metaColor)
                     msg.type == MessageType.AUDIO -> AudioMessage(msg.mediaUrl, msg.durationMs, textColor, metaColor)
-                    msg.type == MessageType.FILE -> MediaCard(Icons.Filled.InsertDriveFile, msg.mediaName.ifBlank { "File" }, "Tap to open · ${humanSize(msg.sizeBytes)}", textColor, metaColor)
+                    msg.type == MessageType.FILE -> MediaCard(Icons.Rounded.InsertDriveFile, msg.mediaName.ifBlank { "File" }, "Tap to open · ${humanSize(msg.sizeBytes)}", textColor, metaColor)
                     else -> Text(msg.text, color = textColor)
                 }
                 Spacer(Modifier.size(3.dp))
@@ -481,9 +481,9 @@ private fun MessageBubble(
                     if (mine && !msg.deleted && seen != SeenState.NONE) {
                         Spacer(Modifier.width(4.dp))
                         when (seen) {
-                            SeenState.SENT -> Icon(Icons.Filled.Done, "Sent", tint = metaColor, modifier = Modifier.size(15.dp))
-                            SeenState.SEEN_SOME -> Icon(Icons.Filled.DoneAll, "Seen by some", tint = metaColor, modifier = Modifier.size(15.dp))
-                            SeenState.SEEN_ALL -> Icon(Icons.Filled.DoneAll, "Seen", tint = SeenBlue, modifier = Modifier.size(15.dp))
+                            SeenState.SENT -> Icon(Icons.Rounded.Done, "Sent", tint = metaColor, modifier = Modifier.size(15.dp))
+                            SeenState.SEEN_SOME -> Icon(Icons.Rounded.DoneAll, "Seen by some", tint = metaColor, modifier = Modifier.size(15.dp))
+                            SeenState.SEEN_ALL -> Icon(Icons.Rounded.DoneAll, "Seen", tint = SeenBlue, modifier = Modifier.size(15.dp))
                             else -> {}
                         }
                     }
@@ -529,12 +529,12 @@ private fun MessageInputBar(
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             if (!editingMode) {
                 Box {
-                    IconButton(onClick = onAttachToggle) { Icon(Icons.Filled.AttachFile, contentDescription = "Attach", tint = MaterialTheme.colorScheme.primary) }
+                    IconButton(onClick = onAttachToggle) { Icon(Icons.Rounded.AttachFile, contentDescription = "Attach", tint = MaterialTheme.colorScheme.primary) }
                     DropdownMenu(expanded = attachOpen, onDismissRequest = onAttachToggle) {
-                        DropdownMenuItem(text = { Text("Photo") }, leadingIcon = { Icon(Icons.Filled.Image, null) }, onClick = onPickImage)
-                        DropdownMenuItem(text = { Text("Video") }, leadingIcon = { Icon(Icons.Filled.Videocam, null) }, onClick = onPickVideo)
-                        DropdownMenuItem(text = { Text("File") }, leadingIcon = { Icon(Icons.Filled.InsertDriveFile, null) }, onClick = onPickFile)
-                        DropdownMenuItem(text = { Text("Time capsule") }, leadingIcon = { Icon(Icons.Filled.HourglassTop, null) }, onClick = onCapsule)
+                        DropdownMenuItem(text = { Text("Photo") }, leadingIcon = { Icon(Icons.Rounded.Image, null) }, onClick = onPickImage)
+                        DropdownMenuItem(text = { Text("Video") }, leadingIcon = { Icon(Icons.Rounded.Videocam, null) }, onClick = onPickVideo)
+                        DropdownMenuItem(text = { Text("File") }, leadingIcon = { Icon(Icons.Rounded.InsertDriveFile, null) }, onClick = onPickFile)
+                        DropdownMenuItem(text = { Text("Time capsule") }, leadingIcon = { Icon(Icons.Rounded.HourglassTop, null) }, onClick = onCapsule)
                     }
                 }
             } else Spacer(Modifier.width(8.dp))
@@ -553,10 +553,10 @@ private fun MessageInputBar(
                 modifier = Modifier.size(48.dp).clickable { if (showMic || recording) onMic() else onSend() }) {
                 Box(contentAlignment = Alignment.Center) {
                     val icon = when {
-                        recording -> Icons.Filled.Stop
-                        editingMode -> Icons.Filled.Done
-                        showMic -> Icons.Filled.Mic
-                        else -> Icons.Filled.Send
+                        recording -> Icons.Rounded.Stop
+                        editingMode -> Icons.Rounded.Done
+                        showMic -> Icons.Rounded.Mic
+                        else -> Icons.Rounded.Send
                     }
                     Icon(icon, contentDescription = "Send", tint = MaterialTheme.colorScheme.onPrimary)
                 }

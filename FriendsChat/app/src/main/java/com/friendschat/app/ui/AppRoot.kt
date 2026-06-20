@@ -67,6 +67,9 @@ fun AppRoot(openChatId: String? = null, onChatConsumed: () -> Unit = {}) {
     val authRepo = remember { AuthRepository() }
     var loggedIn by remember { mutableStateOf(authRepo.isLoggedIn()) }
     var verified by remember { mutableStateOf(authRepo.isEmailVerified()) }
+    // True while we're refreshing auth state right after login — show one loading
+    // screen instead of briefly flashing the verify / onboarding screens.
+    var resolving by remember { mutableStateOf(authRepo.isLoggedIn()) }
 
     DisposableEffect(Unit) {
         val listener = authRepo.addAuthStateListener { loggedIn = it }
@@ -75,19 +78,30 @@ fun AppRoot(openChatId: String? = null, onChatConsumed: () -> Unit = {}) {
 
     LaunchedEffect(loggedIn) {
         if (loggedIn) {
+            resolving = true
             // Refresh server state so a just-clicked verification link is reflected.
             runCatching { authRepo.reloadUser() }
             verified = authRepo.isEmailVerified()
             runCatching { authRepo.ensureProfileName() }
+            resolving = false
         } else {
             verified = false
+            resolving = false
         }
     }
 
     when {
         !loggedIn -> AuthFlow()
+        resolving -> LoadingScreen()
         !verified -> VerifyEmailScreen(onVerified = { verified = true })
         else -> MainGate(openChatId = openChatId, onChatConsumed = onChatConsumed)
+    }
+}
+
+@Composable
+private fun LoadingScreen() {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
     }
 }
 

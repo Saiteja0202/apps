@@ -13,12 +13,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.GroupAdd
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.GroupAdd
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,10 +61,10 @@ fun NewChatScreen(
         topBar = {
             TopAppBar(
                 title = { Text(if (groupMode) "New group" else "New chat") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") } },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
                 actions = {
                     TextButton(onClick = { groupMode = !groupMode }) {
-                        Icon(Icons.Filled.GroupAdd, null, tint = MaterialTheme.colorScheme.onPrimary)
+                        Icon(Icons.Rounded.GroupAdd, null, tint = MaterialTheme.colorScheme.onPrimary)
                         Spacer(Modifier.width(6.dp))
                         Text(if (groupMode) "DM" else "Group", color = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -91,7 +91,7 @@ fun NewChatScreen(
                         vm.selected.forEach { u ->
                             AssistChip(onClick = { vm.removeFromGroup(u.uid) },
                                 label = { Text(u.name) },
-                                trailingIcon = { Icon(Icons.Filled.Close, "remove", modifier = Modifier.size(16.dp)) })
+                                trailingIcon = { Icon(Icons.Rounded.Close, "remove", modifier = Modifier.size(16.dp)) })
                         }
                     }
                 }
@@ -116,7 +116,7 @@ fun NewChatScreen(
                 ) {
                     androidx.compose.foundation.layout.Box(contentAlignment = Alignment.Center) {
                         if (vm.searching) CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(22.dp))
-                        else Icon(Icons.Filled.Search, "Search", tint = MaterialTheme.colorScheme.onPrimary)
+                        else Icon(Icons.Rounded.Search, "Search", tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 }
             }
@@ -155,7 +155,7 @@ fun NewChatScreen(
                     enabled = !vm.busy,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(Icons.Filled.Check, null)
+                    Icon(Icons.Rounded.Check, null)
                     Spacer(Modifier.width(6.dp))
                     Text("Create group (${vm.selected.size} members)", fontWeight = FontWeight.Bold)
                 }
@@ -183,7 +183,7 @@ private fun ResultCard(user: ChatUser, groupMode: Boolean, onClick: () -> Unit) 
                 )
             }
             Icon(
-                if (groupMode) Icons.Filled.Add else Icons.AutoMirrored.Filled.ArrowBack,
+                if (groupMode) Icons.Rounded.Add else Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )

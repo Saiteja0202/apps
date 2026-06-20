@@ -44,7 +44,7 @@ object Notifications {
         )
         val body = chat.lastMessage.ifBlank { "New message" }
         val n = NotificationCompat.Builder(context, "messages")
-            .setSmallIcon(R.drawable.ic_launcher)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(chat.titleFor(uid))
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))

@@ -32,20 +32,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.Chat
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
+import androidx.compose.material.icons.automirrored.rounded.Chat
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Face
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -198,7 +198,7 @@ fun OnboardingFlow(
                             onCity = { location = it }
                         )
                         3 -> ChoiceStep(
-                            icon = Icons.Filled.Face,
+                            icon = Icons.Rounded.Face,
                             title = "How do you identify?",
                             subtitle = "This is shown on your profile.",
                             choices = GENDER_CHOICES,
@@ -206,7 +206,7 @@ fun OnboardingFlow(
                             onToggle = { gender = it }
                         )
                         4 -> ChoiceStep(
-                            icon = Icons.Filled.FavoriteBorder,
+                            icon = Icons.Rounded.FavoriteBorder,
                             title = "Who would you like to meet?",
                             subtitle = "Pick all that apply.",
                             choices = INTEREST_CHOICES,
@@ -231,7 +231,7 @@ fun OnboardingFlow(
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 if (step > 0) {
                     TextButton(onClick = { vm.clearError(); step-- }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, null)
                         Spacer(Modifier.width(4.dp))
                         Text("Back")
                     }
@@ -265,7 +265,7 @@ fun OnboardingFlow(
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(Modifier.width(6.dp))
-                        Icon(if (step == LAST_STEP) Icons.Filled.Check else Icons.AutoMirrored.Filled.ArrowForward, null)
+                        Icon(if (step == LAST_STEP) Icons.Rounded.Check else Icons.AutoMirrored.Rounded.ArrowForward, null)
                     }
                 }
             }
@@ -309,7 +309,7 @@ private fun WelcomeStep() {
         }
     }
     Spacer(Modifier.height(20.dp))
-    StepHeader(Icons.Filled.Favorite, "Welcome to GenZ", "Let's build a profile that feels like you. It only takes a minute.")
+    StepHeader(Icons.Rounded.Favorite, "Welcome to GenZ", "Let's build a profile that feels like you. It only takes a minute.")
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -320,7 +320,7 @@ private fun AboutStep(
     job: String, onJob: (String) -> Unit,
     relationship: String, onRelationship: (String) -> Unit
 ) {
-    StepHeader(Icons.Filled.Person, "The basics", "What should people call you?")
+    StepHeader(Icons.Rounded.Person, "The basics", "What should people call you?")
     OutlinedTextField(name, onName, label = { Text("Display name") }, singleLine = true, modifier = Modifier.fillMaxWidth())
     Spacer(Modifier.height(12.dp))
     OutlinedTextField(
@@ -357,7 +357,7 @@ private fun LocationStep(
     onCountry: (String) -> Unit,
     onCity: (String) -> Unit
 ) {
-    StepHeader(Icons.Filled.LocationOn, "Where are you?", "You'll be matched with people in your city.")
+    StepHeader(Icons.Rounded.LocationOn, "Where are you?", "You'll be matched with people in your city.")
     LocationPicker(locVm, country, city, onCountry, onCity)
 }
 
@@ -404,7 +404,7 @@ private fun ChoiceCard(emoji: String, label: String, selected: Boolean, onClick:
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PhotosStep(photos: List<String>, uploading: Boolean, onAdd: () -> Unit, onRemove: (String) -> Unit) {
-    StepHeader(Icons.Filled.PhotoCamera, "Add your photos", "At least one. Pick your favourites — first one is your main.")
+    StepHeader(Icons.Rounded.PhotoCamera, "Add your photos", "At least one. Pick your favourites — first one is your main.")
     FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         photos.forEach { url ->
             Box(Modifier.size(104.dp)) {
@@ -413,7 +413,7 @@ private fun PhotosStep(photos: List<String>, uploading: Boolean, onAdd: () -> Un
                     shape = CircleShape, color = Color(0xCC000000),
                     modifier = Modifier.align(Alignment.TopEnd).padding(4.dp).size(24.dp).clickable { onRemove(url) }
                 ) {
-                    Box(contentAlignment = Alignment.Center) { Icon(Icons.Filled.Close, "Remove", tint = Color.White, modifier = Modifier.size(16.dp)) }
+                    Box(contentAlignment = Alignment.Center) { Icon(Icons.Rounded.Close, "Remove", tint = Color.White, modifier = Modifier.size(16.dp)) }
                 }
             }
         }
@@ -424,7 +424,7 @@ private fun PhotosStep(photos: List<String>, uploading: Boolean, onAdd: () -> Un
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     if (uploading) CircularProgressIndicator(modifier = Modifier.size(26.dp))
-                    else Icon(Icons.Filled.Add, "Add photo", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(34.dp))
+                    else Icon(Icons.Rounded.Add, "Add photo", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(34.dp))
                 }
             }
         }
@@ -433,14 +433,14 @@ private fun PhotosStep(photos: List<String>, uploading: Boolean, onAdd: () -> Un
 
 @Composable
 private fun BioStep(bio: String, onBio: (String) -> Unit) {
-    StepHeader(Icons.Filled.Edit, "Say something about you", "A line or two. Keep it real, keep it light.")
+    StepHeader(Icons.Rounded.Edit, "Say something about you", "A line or two. Keep it real, keep it light.")
     OutlinedTextField(bio, onBio, label = { Text("Your bio (optional)") }, modifier = Modifier.fillMaxWidth().height(140.dp))
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PromptsStep(prompts: List<Prompt>, onChange: (Int, Prompt) -> Unit) {
-    StepHeader(Icons.AutoMirrored.Filled.Chat, "Pick a few prompts", "Give people something to message you about.")
+    StepHeader(Icons.AutoMirrored.Rounded.Chat, "Pick a few prompts", "Give people something to message you about.")
     prompts.forEachIndexed { i, p ->
         PromptSlot(p) { onChange(i, it) }
         Spacer(Modifier.height(12.dp))
@@ -477,5 +477,5 @@ private fun PromptSlot(prompt: Prompt, onChange: (Prompt) -> Unit) {
 
 @Composable
 private fun FinishStep(name: String) {
-    StepHeader(Icons.Filled.CheckCircle, "You're all set${if (name.isNotBlank()) ", ${name.substringBefore(' ')}" else ""}!", "Tap below to start meeting people on GenZ.")
+    StepHeader(Icons.Rounded.CheckCircle, "You're all set${if (name.isNotBlank()) ", ${name.substringBefore(' ')}" else ""}!", "Tap below to start meeting people on GenZ.")
 }

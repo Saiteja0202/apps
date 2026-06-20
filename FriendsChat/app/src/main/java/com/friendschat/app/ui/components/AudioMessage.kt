@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.GraphicEq
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.rounded.GraphicEq
+import androidx.compose.material.icons.rounded.Pause
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +40,7 @@ fun AudioMessage(url: String, durationMs: Long, tint: Color, subColor: Color) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = if (playing) Icons.Filled.Pause else Icons.Filled.PlayArrow,
+            imageVector = if (playing) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
             contentDescription = if (playing) "Pause" else "Play",
             tint = tint,
             modifier = Modifier
@@ -64,7 +64,7 @@ fun AudioMessage(url: String, durationMs: Long, tint: Color, subColor: Color) {
                 }
         )
         Spacer(Modifier.width(8.dp))
-        Icon(Icons.Filled.GraphicEq, contentDescription = null, tint = tint.copy(alpha = 0.7f), modifier = Modifier.size(22.dp))
+        Icon(Icons.Rounded.GraphicEq, contentDescription = null, tint = tint.copy(alpha = 0.7f), modifier = Modifier.size(22.dp))
         Spacer(Modifier.width(8.dp))
         Text(formatDuration(durationMs), color = subColor)
     }

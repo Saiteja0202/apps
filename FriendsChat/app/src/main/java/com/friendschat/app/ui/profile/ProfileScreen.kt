@@ -18,12 +18,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Brightness6
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.automirrored.rounded.Logout
+import androidx.compose.material.icons.rounded.Brightness6
+import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.DeleteForever
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -93,7 +93,7 @@ fun ProfileScreen(onEditProfile: () -> Unit, vm: ProfileViewModel = viewModel())
                 onClick = onEditProfile,
                 modifier = Modifier.fillMaxWidth().height(50.dp)
             ) {
-                Icon(Icons.Filled.Edit, null)
+                Icon(Icons.Rounded.Edit, null)
                 Spacer(Modifier.width(8.dp))
                 Text("Edit profile", fontWeight = FontWeight.Bold)
             }
@@ -170,20 +170,17 @@ fun ProfileScreen(onEditProfile: () -> Unit, vm: ProfileViewModel = viewModel())
             )
             Spacer(Modifier.height(10.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                ThemeOption("Light", Icons.Filled.LightMode, ThemeState.mode == ThemeState.LIGHT, Modifier.weight(1f)) {
+                ThemeOption("Light", Icons.Rounded.LightMode, ThemeState.mode == ThemeState.LIGHT, Modifier.weight(1f)) {
                     ThemeState.set(context, ThemeState.LIGHT)
                 }
-                ThemeOption("Dark", Icons.Filled.DarkMode, ThemeState.mode == ThemeState.DARK, Modifier.weight(1f)) {
+                ThemeOption("Dark", Icons.Rounded.DarkMode, ThemeState.mode == ThemeState.DARK, Modifier.weight(1f)) {
                     ThemeState.set(context, ThemeState.DARK)
-                }
-                ThemeOption("System", Icons.Filled.Brightness6, ThemeState.mode == ThemeState.SYSTEM, Modifier.weight(1f)) {
-                    ThemeState.set(context, ThemeState.SYSTEM)
                 }
             }
 
             Spacer(Modifier.height(28.dp))
             OutlinedButton(onClick = { vm.logout() }, modifier = Modifier.fillMaxWidth().height(50.dp)) {
-                Icon(Icons.AutoMirrored.Filled.Logout, null)
+                Icon(Icons.AutoMirrored.Rounded.Logout, null)
                 Spacer(Modifier.width(8.dp))
                 Text("Log out", fontWeight = FontWeight.Bold)
             }
@@ -192,7 +189,7 @@ fun ProfileScreen(onEditProfile: () -> Unit, vm: ProfileViewModel = viewModel())
                 onClick = { vm.clearError(); deletePwd = ""; showDelete = true },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(Icons.Filled.DeleteForever, null, tint = MaterialTheme.colorScheme.error)
+                Icon(Icons.Rounded.DeleteForever, null, tint = MaterialTheme.colorScheme.error)
                 Spacer(Modifier.width(8.dp))
                 Text("Delete account", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
             }

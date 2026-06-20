@@ -8,7 +8,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.rememberScrollState
@@ -64,11 +63,7 @@ class MainActivity : ComponentActivity() {
             requestNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
         setContent {
-            val dark = when (ThemeState.mode) {
-                ThemeState.DARK -> true
-                ThemeState.LIGHT -> false
-                else -> isSystemInDarkTheme()
-            }
+            val dark = ThemeState.mode != ThemeState.LIGHT   // light, or dark by default
             EmberTheme(darkTheme = dark) {
                 val view = LocalView.current
                 val barColor = MaterialTheme.colorScheme.surface.toArgb()

@@ -18,8 +18,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -162,8 +162,8 @@ private fun LikerCard(
                 Modifier.fillMaxWidth().padding(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                ActionCircle(Icons.Filled.Close, MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurfaceVariant, Modifier.weight(1f), onPass)
-                ActionCircle(Icons.Filled.Favorite, MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary, Modifier.weight(1f), onLikeBack)
+                ActionCircle(Icons.Rounded.Close, MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurfaceVariant, Modifier.weight(1f), onPass)
+                ActionCircle(Icons.Rounded.Favorite, MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary, Modifier.weight(1f), onLikeBack)
             }
         }
     }

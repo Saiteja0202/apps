@@ -16,9 +16,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -75,7 +75,7 @@ fun LoginScreen(
         ) {
             Spacer(Modifier.height(48.dp))
             Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primary, modifier = Modifier.size(72.dp)) {
-                Icon(Icons.Filled.Favorite, null, tint = Color.White, modifier = Modifier.padding(18.dp))
+                Icon(Icons.Rounded.Favorite, null, tint = Color.White, modifier = Modifier.padding(18.dp))
             }
             Spacer(Modifier.height(14.dp))
             Text("GenZ", style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.Bold, color = Color.White)
@@ -109,7 +109,7 @@ fun LoginScreen(
                         trailingIcon = {
                             IconButton(onClick = { showPassword = !showPassword }) {
                                 Icon(
-                                    if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                    if (showPassword) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
                                     contentDescription = if (showPassword) "Hide password" else "Show password"
                                 )
                             }
